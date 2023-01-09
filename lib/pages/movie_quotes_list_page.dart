@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:movie_quotes_flutter/components/movie_quote_row_component.dart';
 
 import '../models/movie_quote.dart';
 
@@ -43,8 +44,11 @@ class _MovieQuotesListPageState extends State<MovieQuotesListPage> {
         title: const Text("Movie Quotes")
       ),
       backgroundColor: Colors.blue,
-      body: Center(
-        child: Text("Hello"),
+      body: ListView(
+        children: [
+          MovieQuoteRow(mq: quotes[0]),
+          MovieQuoteRow(mq: quotes[1])
+        ],
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
