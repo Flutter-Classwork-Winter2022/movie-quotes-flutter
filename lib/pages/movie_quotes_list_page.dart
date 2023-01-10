@@ -39,16 +39,20 @@ class _MovieQuotesListPageState extends State<MovieQuotesListPage> {
 
   @override
   Widget build(BuildContext context) {
+    // final List<MovieQuoteRow> movieRows = [];
+    // for (final moviequote in quotes) {
+    //   movieRows.add(MovieQuoteRow(mq: moviequote));
+    // }
+
+    final List<MovieQuoteRow> movieRows = quotes.map((e) => MovieQuoteRow(mq: e)).toList();
+
     return Scaffold(
       appBar: AppBar(
         title: const Text("Movie Quotes")
       ),
       backgroundColor: Colors.blue,
       body: ListView(
-        children: [
-          MovieQuoteRow(mq: quotes[0]),
-          MovieQuoteRow(mq: quotes[1])
-        ],
+        children: movieRows,
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
