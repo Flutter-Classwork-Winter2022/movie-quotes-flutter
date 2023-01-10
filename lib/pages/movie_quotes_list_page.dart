@@ -15,6 +15,8 @@ class MovieQuotesListPage extends StatefulWidget {
 
 class _MovieQuotesListPageState extends State<MovieQuotesListPage> {
   final quotes = <MovieQuote>[]; // Later, we will remove this and use the firestore
+  final myMovieController = TextEditingController();
+  final myQuoteController = TextEditingController();
 
   @override
   void initState() {
@@ -34,6 +36,8 @@ class _MovieQuotesListPageState extends State<MovieQuotesListPage> {
   @override
   void dispose() {
     // TODO: implement dispose
+    myMovieController.dispose();
+    myQuoteController.dispose();
     super.dispose();
   }
 
@@ -43,7 +47,6 @@ class _MovieQuotesListPageState extends State<MovieQuotesListPage> {
     // for (final moviequote in quotes) {
     //   movieRows.add(MovieQuoteRow(mq: moviequote));
     // }
-
     final List<MovieQuoteRow> movieRows = quotes.map((e) => MovieQuoteRow(mq: e)).toList();
 
     return Scaffold(
@@ -79,6 +82,7 @@ class _MovieQuotesListPageState extends State<MovieQuotesListPage> {
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 16),
                 child: TextFormField(
+                  controller: myQuoteController,
                   decoration: const InputDecoration(
                     border: UnderlineInputBorder(),
                     labelText: 'Enter your quote',
@@ -88,6 +92,7 @@ class _MovieQuotesListPageState extends State<MovieQuotesListPage> {
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 16),
                 child: TextFormField(
+                  controller: myMovieController,
                   decoration: const InputDecoration(
                     border: UnderlineInputBorder(),
                     labelText: 'Enter your movie',
@@ -113,7 +118,13 @@ class _MovieQuotesListPageState extends State<MovieQuotesListPage> {
               child: const Text('Create'),
               onPressed: () {
                 // TODO: Actually create the quote!
-
+                setState(() {
+                  MovieQuote newMQ = MovieQuote(quote: myQuoteController.text, movie: myMovieController.text);
+                  quotes.add(newMQ);
+                  print(quotes.toString());
+                  myMovieController.text = "";
+                  myQuoteController.text = "";
+                });
                 Navigator.of(context).pop();
               },
             ),
