@@ -50,16 +50,77 @@ class _MovieQuotesListPageState extends State<MovieQuotesListPage> {
       appBar: AppBar(
         title: const Text("Movie Quotes")
       ),
-      backgroundColor: Colors.blue,
+      backgroundColor: Colors.blueGrey,
       body: ListView(
         children: movieRows,
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           print("You pressed the FAB!");
+          _dialogBuilder(context);
         },
         tooltip: 'Create',
         child: const Icon(Icons.add),
       ),
     );
-  }}
+  }
+
+
+  Future<void> _dialogBuilder(BuildContext context) {
+    return showDialog<void>(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Create a Movie Quote'),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 16),
+                child: TextFormField(
+                  decoration: const InputDecoration(
+                    border: UnderlineInputBorder(),
+                    labelText: 'Enter your quote',
+                  ),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 16),
+                child: TextFormField(
+                  decoration: const InputDecoration(
+                    border: UnderlineInputBorder(),
+                    labelText: 'Enter your movie',
+                  ),
+                ),
+              ),
+            ],
+          ),
+          actions: <Widget>[
+            TextButton(
+              style: TextButton.styleFrom(
+                textStyle: Theme.of(context).textTheme.labelLarge,
+              ),
+              child: const Text('Cancel'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+            TextButton(
+              style: TextButton.styleFrom(
+                textStyle: Theme.of(context).textTheme.labelLarge,
+              ),
+              child: const Text('Create'),
+              onPressed: () {
+                // TODO: Actually create the quote!
+
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+}
