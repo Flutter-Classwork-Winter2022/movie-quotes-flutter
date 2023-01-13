@@ -36,7 +36,6 @@ class _MovieQuotesListPageState extends State<MovieQuotesListPage> {
 
   @override
   void dispose() {
-    // TODO: implement dispose
     myMovieController.dispose();
     myQuoteController.dispose();
     super.dispose();
@@ -53,7 +52,7 @@ class _MovieQuotesListPageState extends State<MovieQuotesListPage> {
       onTap: () {
         print("You clicked on the movie quote: ${e.quote}");
         Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) {
-          return MovieQuoteDetailPage();
+          return MovieQuoteDetailPage(mq: e,);
         }));
       },
     )).toList();
@@ -126,7 +125,6 @@ class _MovieQuotesListPageState extends State<MovieQuotesListPage> {
               ),
               child: const Text('Create'),
               onPressed: () {
-                // TODO: Actually create the quote!
                 setState(() {
                   MovieQuote newMQ = MovieQuote(quote: myQuoteController.text, movie: myMovieController.text);
                   quotes.add(newMQ);
