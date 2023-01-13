@@ -12,6 +12,17 @@ class MovieQuoteDetailPage extends StatefulWidget {
 }
 
 class _MovieQuoteDetailPageState extends State<MovieQuoteDetailPage> {
+  final editMovieTextController = TextEditingController();
+  final editQuoteTextController = TextEditingController();
+
+  @override
+  void dispose() {
+    editMovieTextController.dispose();
+    editQuoteTextController.dispose();
+    super.dispose();
+  }
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -21,6 +32,7 @@ class _MovieQuoteDetailPageState extends State<MovieQuoteDetailPage> {
           IconButton(
               onPressed: () {
                 print("You clicked Edit!");
+                _editDialogBuilder(context);
               },
               icon: const Icon(Icons.edit)
           ),
@@ -28,8 +40,17 @@ class _MovieQuoteDetailPageState extends State<MovieQuoteDetailPage> {
               onPressed: () {
                 print("You clicked Delete!");
                 // HW - make a snackbar
-                const snackBar = SnackBar(content: Text("Yay! A snackbar~"),);
-                ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: const Text("Yay! A snackbar~"),
+                      action: SnackBarAction(
+                        label: 'Undo',
+                        onPressed: () {
+                          print("Figure out how to UNDO");
+                        },
+                      ),
+                    )
+                );
                 Navigator.pop(context);
               },
               icon: const Icon(Icons.delete)
@@ -45,18 +66,86 @@ class _MovieQuoteDetailPageState extends State<MovieQuoteDetailPage> {
         child: Column(
           children: [
             LabelledTextDisplay(
-                title: "Quote",
+                title: "Quote:",
                 content:  widget.mq.quote,
                 iconData: Icons.format_quote_outlined,
             ),
             LabelledTextDisplay(
-              title: "Movie",
+              title: "Movie:",
               content:  widget.mq.movie,
               iconData: Icons.movie_filter_outlined,
             ),
           ],
         ),
       )
+    );
+  }
+
+  Future<void> _editDialogBuilder(BuildContext context) {
+    editMovieTextController.text = widget.mq.movie;
+    editQuoteTextController.text = widget.mq.quote;
+
+    return showDialog<void>(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Edit your Movie Quote'),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 16),
+                child: TextFormField(
+                  controller: editQuoteTextController,
+                  decoration: const InputDecoration(
+                    border: UnderlineInputBorder(),
+                    labelText: 'Edit your quote',
+                  ),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 16),
+                child: TextFormField(
+                  controller: editMovieTextController,
+                  decoration: const InputDecoration(
+                    border: UnderlineInputBorder(),
+                    labelText: 'Edit your movie',
+                  ),
+                ),
+              ),
+            ],
+          ),
+          actions: <Widget>[
+            TextButton(
+              style: TextButton.styleFrom(
+                textStyle: Theme.of(context).textTheme.labelLarge,
+              ),
+              child: const Text('Cancel'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+            TextButton(
+              style: TextButton.styleFrom(
+                textStyle: Theme.of(context).textTheme.labelLarge,
+              ),
+              child: const Text('Save Changes'),
+              onPressed: () {
+                setState(() {
+                  //MovieQuote newMQ = MovieQuote(quote: editQuoteTextController.text, movie: editMovieTextController.text);
+                  widget.mq.quote = editQuoteTextController.text;
+                  widget.mq.movie = editMovieTextController.text;
+                  print(widget.mq.toString());
+
+
+                });
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
     );
   }
 }
