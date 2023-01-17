@@ -1,7 +1,11 @@
+import 'dart:async';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:movie_quotes_flutter/components/movie_quote_row_component.dart';
 import 'package:movie_quotes_flutter/pages/movie_quote_detail_page.dart';
 
+import '../managers/movie_quote_collection_manager.dart';
 import '../models/movie_quote.dart';
 
 class MovieQuotesListPage extends StatefulWidget {
@@ -19,19 +23,28 @@ class _MovieQuotesListPageState extends State<MovieQuotesListPage> {
   final myMovieController = TextEditingController();
   final myQuoteController = TextEditingController();
 
+  late StreamSubscription movieQuotesSubscription;
+
   @override
   void initState() {
     super.initState();
-    quotes.add(
-        MovieQuote(
-            quote: "I'll be back",
-            movie: "The Terminator"
-        ));
-    quotes.add(
-        MovieQuote(
-            quote: "You killed my father, prepare to die.",
-            movie: "The Princess Bride"
-        ));
+    movieQuotesSubscription = MovieQuotesCollectionManager.instance.startListening(() {
+      print("There are new quotes!!!!");
+      setState(() {});
+    });
+
+    // quotes.add(
+    //     MovieQuote(
+    //         quote: "I'll be back",
+    //         movie: "The Terminator",
+    //         lastTouched: Timestamp.now()
+    //     ));
+    // quotes.add(
+    //     MovieQuote(
+    //         quote: "You killed my father, prepare to die.",
+    //         movie: "The Princess Bride",
+    //         lastTouched: Timestamp.now()
+    //     ));
   }
 
   @override
@@ -129,11 +142,12 @@ class _MovieQuotesListPageState extends State<MovieQuotesListPage> {
               child: const Text('Create'),
               onPressed: () {
                 setState(() {
-                  MovieQuote newMQ = MovieQuote(quote: myQuoteController.text, movie: myMovieController.text);
-                  quotes.add(newMQ);
-                  print(quotes.toString());
-                  myMovieController.text = "";
-                  myQuoteController.text = "";
+                  // TODO: Create movie quote for firestore
+                  // MovieQuote newMQ = MovieQuote(quote: myQuoteController.text, movie: myMovieController.text, lastTouched: Timestamp.now());
+                  // quotes.add(newMQ);
+                  // print(quotes.toString());
+                  // myMovieController.text = "";
+                  // myQuoteController.text = "";
                 });
                 Navigator.of(context).pop();
               },

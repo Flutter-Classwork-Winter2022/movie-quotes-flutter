@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "841973188601",
+    "project_id": "flutter-movie-quotes-3dd45",
+    "storage_bucket": "flutter-movie-quotes-3dd45.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:841973188601:android:aec2af2b3f1b39836b5f28",
+        "android_client_info": {
+          "package_name": "com.example.movie_quotes_flutter"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "841973188601-gmpggr4m3i928ki9jhvnrkc67oc8cjpb.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC8Fbp8vcODnsuKfWZ0rzuL0puBoBiijYk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "841973188601-gmpggr4m3i928ki9jhvnrkc67oc8cjpb.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "841973188601-1tihq8pigp0k2oub820rcs1onij1s0a1.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.movieQuotesFlutter"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
