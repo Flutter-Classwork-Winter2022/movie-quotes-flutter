@@ -25,4 +25,19 @@ class MovieQuotesCollectionManager {
   }
 
   // TODO: Make a stop listening function
+  void stopListening(StreamSubscription subscription) {
+    subscription?.cancel();
+  }
+
+
+  Future<void> add({required String quote, required String movie}) {
+    return _ref.add({
+      kMovieQuote_quote: quote,
+      kMovieQuote_movie: movie,
+      kMovieQuote_lastTouched: Timestamp.now(),
+    })
+        .then((DocumentReference docRef) => print("MovieQuote added with id ${docRef.id}"))
+        .catchError((error) => print("Failed to add movie quote, error: $error"));
+  }
+
 }

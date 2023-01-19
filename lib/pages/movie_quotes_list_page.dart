@@ -51,6 +51,7 @@ class _MovieQuotesListPageState extends State<MovieQuotesListPage> {
   void dispose() {
     myMovieController.dispose();
     myQuoteController.dispose();
+    MovieQuotesCollectionManager.instance.stopListening(movieQuotesSubscription);
     super.dispose();
   }
 
@@ -138,12 +139,7 @@ class _MovieQuotesListPageState extends State<MovieQuotesListPage> {
               child: const Text('Create'),
               onPressed: () {
                 setState(() {
-                  // TODO: Create movie quote for firestore
-                  // MovieQuote newMQ = MovieQuote(quote: myQuoteController.text, movie: myMovieController.text, lastTouched: Timestamp.now());
-                  // quotes.add(newMQ);
-                  // print(quotes.toString());
-                  // myMovieController.text = "";
-                  // myQuoteController.text = "";
+                  MovieQuotesCollectionManager.instance.add(quote: myQuoteController.text, movie: myMovieController.text);
                 });
                 Navigator.of(context).pop();
               },
