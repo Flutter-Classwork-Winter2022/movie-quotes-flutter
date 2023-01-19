@@ -56,11 +56,7 @@ class _MovieQuotesListPageState extends State<MovieQuotesListPage> {
 
   @override
   Widget build(BuildContext context) {
-    // final List<MovieQuoteRow> movieRows = [];
-    // for (final moviequote in quotes) {
-    //   movieRows.add(MovieQuoteRow(mq: moviequote));
-    // }
-    final List<MovieQuoteRow> movieRows = quotes.map((e) => MovieQuoteRow(
+    final List<MovieQuoteRow> movieRows = MovieQuotesCollectionManager.instance.latestMovieQuotes.map((e) => MovieQuoteRow(
       movieQuote: e,
       onTap: () async {
         print("You clicked on the movie quote: ${e.quote}\n");
