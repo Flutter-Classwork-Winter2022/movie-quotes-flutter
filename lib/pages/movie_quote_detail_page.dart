@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:movie_quotes_flutter/managers/movie_quote_collection_manager.dart';
 import 'package:movie_quotes_flutter/managers/movie_quote_document_manager.dart';
 
 import '../models/movie_quote.dart';
@@ -58,6 +59,8 @@ class _MovieQuoteDetailPageState extends State<MovieQuoteDetailPage> {
               onPressed: () {
                 print("You clicked Delete!");
                 // HW - make a snackbar
+                final justDeletedQuote = MovieQuotesDocumentManager.instance.latestMovieQuote!.quote;
+                final justDeletedMovie = MovieQuotesDocumentManager.instance.latestMovieQuote!.movie;
                 ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
                       content: const Text("Deleted quote"),
@@ -65,6 +68,7 @@ class _MovieQuoteDetailPageState extends State<MovieQuoteDetailPage> {
                         label: 'Undo',
                         onPressed: () {
                           print("Figure out how to UNDO");
+                          MovieQuotesCollectionManager.instance.add(quote: justDeletedQuote, movie: justDeletedMovie);
                         },
                       ),
                     )
