@@ -32,19 +32,6 @@ class _MovieQuotesListPageState extends State<MovieQuotesListPage> {
       print("There are new quotes!!!!");
       setState(() {});
     });
-
-    // quotes.add(
-    //     MovieQuote(
-    //         quote: "I'll be back",
-    //         movie: "The Terminator",
-    //         lastTouched: Timestamp.now()
-    //     ));
-    // quotes.add(
-    //     MovieQuote(
-    //         quote: "You killed my father, prepare to die.",
-    //         movie: "The Princess Bride",
-    //         lastTouched: Timestamp.now()
-    //     ));
   }
 
   @override
@@ -57,12 +44,12 @@ class _MovieQuotesListPageState extends State<MovieQuotesListPage> {
 
   @override
   Widget build(BuildContext context) {
-    final List<MovieQuoteRow> movieRows = MovieQuotesCollectionManager.instance.latestMovieQuotes.map((e) => MovieQuoteRow(
-      movieQuote: e,
+    final List<MovieQuoteRow> movieRows = MovieQuotesCollectionManager.instance.latestMovieQuotes.map((mq) => MovieQuoteRow(
+      movieQuote: mq,
       onTap: () async {
-        print("You clicked on the movie quote: ${e.quote}\n");
+        print("You clicked on the movie quote: ${mq.quote}\n");
         await Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) {
-          return MovieQuoteDetailPage(mq: e,);
+          return MovieQuoteDetailPage(documentId: mq.documentId!,);
         }));
         setState(() {
 
@@ -140,6 +127,8 @@ class _MovieQuotesListPageState extends State<MovieQuotesListPage> {
               onPressed: () {
                 setState(() {
                   MovieQuotesCollectionManager.instance.add(quote: myQuoteController.text, movie: myMovieController.text);
+                  myMovieController.text = "";
+                  myQuoteController.text = "";
                 });
                 Navigator.of(context).pop();
               },

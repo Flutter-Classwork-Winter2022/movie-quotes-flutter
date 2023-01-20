@@ -1,11 +1,14 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
+import 'package:movie_quotes_flutter/managers/movie_quote_document_manager.dart';
 
 import '../models/movie_quote.dart';
 
 class MovieQuoteDetailPage extends StatefulWidget {
-  final MovieQuote mq;
+  final String documentId;
 
-  const MovieQuoteDetailPage({Key? key, required this.mq}) : super(key: key);
+  const MovieQuoteDetailPage({Key? key, required this.documentId}) : super(key: key);
 
   @override
   State<MovieQuoteDetailPage> createState() => _MovieQuoteDetailPageState();
@@ -15,13 +18,28 @@ class _MovieQuoteDetailPageState extends State<MovieQuoteDetailPage> {
   final editMovieTextController = TextEditingController();
   final editQuoteTextController = TextEditingController();
 
+  late StreamSubscription movieQuoteSubscription;
+
+  @override
+  void initState() {
+    super.initState();
+    movieQuoteSubscription = MovieQuotesDocumentManager.instance.startListening(
+      widget.documentId,
+        () {
+          setState(() {
+            print("");
+          });
+        }
+    );
+  }
+
   @override
   void dispose() {
     editMovieTextController.dispose();
     editQuoteTextController.dispose();
+    MovieQuotesDocumentManager.instance.stopListening(movieQuoteSubscription);
     super.dispose();
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -42,7 +60,7 @@ class _MovieQuoteDetailPageState extends State<MovieQuoteDetailPage> {
                 // HW - make a snackbar
                 ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
-                      content: const Text("Yay! A snackbar~"),
+                      content: const Text("Deleted quote"),
                       action: SnackBarAction(
                         label: 'Undo',
                         onPressed: () {
@@ -51,6 +69,7 @@ class _MovieQuoteDetailPageState extends State<MovieQuoteDetailPage> {
                       ),
                     )
                 );
+                MovieQuotesDocumentManager.instance.deleteLatestMovieQuote();
                 Navigator.pop(context);
               },
               icon: const Icon(Icons.delete)
@@ -67,12 +86,12 @@ class _MovieQuoteDetailPageState extends State<MovieQuoteDetailPage> {
           children: [
             LabelledTextDisplay(
                 title: "Quote:",
-                content:  widget.mq.quote,
+                content:  MovieQuotesDocumentManager.instance.latestMovieQuote?.quote ?? "",
                 iconData: Icons.format_quote_outlined,
             ),
             LabelledTextDisplay(
               title: "Movie:",
-              content:  widget.mq.movie,
+              content:  MovieQuotesDocumentManager.instance.latestMovieQuote?.movie ?? "",
               iconData: Icons.movie_filter_outlined,
             ),
           ],
@@ -82,8 +101,8 @@ class _MovieQuoteDetailPageState extends State<MovieQuoteDetailPage> {
   }
 
   Future<void> _editDialogBuilder(BuildContext context) {
-    editMovieTextController.text = widget.mq.movie;
-    editQuoteTextController.text = widget.mq.quote;
+    editMovieTextController.text = MovieQuotesDocumentManager.instance.latestMovieQuote?.movie ?? "";
+    editQuoteTextController.text = MovieQuotesDocumentManager.instance.latestMovieQuote?.quote ?? "";
 
     return showDialog<void>(
       context: context,
@@ -133,12 +152,10 @@ class _MovieQuoteDetailPageState extends State<MovieQuoteDetailPage> {
               child: const Text('Save Changes'),
               onPressed: () {
                 setState(() {
-                  //MovieQuote newMQ = MovieQuote(quote: editQuoteTextController.text, movie: editMovieTextController.text);
-                  widget.mq.quote = editQuoteTextController.text;
-                  widget.mq.movie = editMovieTextController.text;
-                  print(widget.mq.toString());
-
-
+                  MovieQuotesDocumentManager.instance.updateLatestMovieQuote(
+                      quote: editQuoteTextController.text,
+                      movie: editMovieTextController.text
+                  );
                 });
                 Navigator.of(context).pop();
               },
