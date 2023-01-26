@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 
+import '../managers/auth_manager.dart';
+
 class EmailPasswordAuthPage extends StatefulWidget {
   final bool isNewUser;
   const EmailPasswordAuthPage({
@@ -18,6 +20,13 @@ class _EmailPasswordAuthPageState extends State<EmailPasswordAuthPage> {
   final emailTextController = TextEditingController();
   final passwordTextController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    AuthManager.instance.startListening();
+    super.initState();
+  }
 
   @override
   void dispose() {
@@ -91,8 +100,14 @@ class _EmailPasswordAuthPageState extends State<EmailPasswordAuthPage> {
                           "Email: ${emailTextController.text}  Password: ${passwordTextController.text}");
                       if (widget.isNewUser) {
                         print("TODO: Create a new user!");
+                        AuthManager.instance.createNewUserEmailPassword(
+                            context: context,
+                            email: emailTextController.text,
+                            password: passwordTextController.text
+                        );
                       } else {
                         print("TODO: Log in an existing user");
+
                       }
                     } else {
                       print("This form isn't valid, do nothing");
