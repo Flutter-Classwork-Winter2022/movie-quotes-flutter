@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:movie_quotes_flutter/pages/login_front_page.dart';
 import 'package:movie_quotes_flutter/pages/movie_quotes_list_page.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
@@ -30,7 +31,7 @@ class MyApp extends StatelessWidget {
         // is not restarted.
         primarySwatch: Colors.blue,
       ),
-      home: const MovieQuotesListPage(),
+      home: const LoginFrontPage(),
     );
   }
 }
